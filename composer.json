@@ -1,0 +1,12 @@
+{
+    "minimum-stability": "dev",
+    "require": {
+        "php": "5.4.*",
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload" : {
+        "psr-0" : {
+            "FizzBuzz" : "src/"
+        }
+    }
+}
