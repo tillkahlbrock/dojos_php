@@ -6,14 +6,20 @@ class Buzzer
 {
     public function printIt($number)
     {
+        $output = '';
+
         if ($number % 3 == 0) {
-            return 'fizz';
+            $output .= 'fizz';
         }
 
         if ($number % 5 == 0) {
-            return 'buzz';
+            $output .= 'buzz';
         }
 
-        return $number;
+        if ($output == '') {
+            return $number;
+        }
+
+        return $output;
     }
 }

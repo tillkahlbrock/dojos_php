@@ -57,4 +57,12 @@ class FizzBuzzTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('buzz', $this->buzzer->printIt(10));
     }
+
+    /**
+     * @test
+     */
+    public function it_should_return_fizzBuzz_for_input_15()
+    {
+        $this->assertEquals('fizzbuzz', $this->buzzer->printIt(15));
+    }
 }
