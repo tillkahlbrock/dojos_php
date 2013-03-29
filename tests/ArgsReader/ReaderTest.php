@@ -13,9 +13,9 @@ class ReaderTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_return_true_for_an_empty_argslist_if_no_specification_is_given()
+    public function it_should_return_true_for_no_args_if_no_specification_is_given()
     {
-       $this->assertTrue($this->buildReader()->parse(array()));
+       $this->assertTrue($this->buildReader()->parse(''));
     }
 
     /**
@@ -27,7 +27,7 @@ class ReaderTest extends PHPUnit_Framework_TestCase
             'f' => 'boolean'
         );
 
-        $this->assertTrue($this->buildReader()->parse(array()));
+        $this->assertTrue($this->buildReader()->parse(''));
     }
 
     /**
@@ -40,7 +40,7 @@ class ReaderTest extends PHPUnit_Framework_TestCase
         );
 
         $reader = $this->buildReader();
-        $reader->parse(array());
+        $reader->parse('');
 
         $this->assertFalse($reader->getArg('f'));
     }
