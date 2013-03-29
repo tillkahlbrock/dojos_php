@@ -33,6 +33,18 @@ class ReaderTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_a_not_specified_parameter_is_given()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Unknown parameter \'-f\'');
+
+        $this->specification = array();
+
+        $this->buildReader()->parse('-f');
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_boolean_parameter_is_specified_but_string_is_given()
     {
         $this->setExpectedException('\InvalidArgumentException', 'Parameter \'-f\' must not have any arguments.');
