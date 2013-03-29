@@ -47,6 +47,19 @@ class ReaderTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function it_should_allow_to_parse_two_bool_parameters_successively()
+    {
+        $this->specification = array(
+            'f' => 'boolean',
+            'l' => 'boolean'
+        );
+
+        $this->assertTrue($this->buildReader()->parse('-f -l'));
+    }
+
+    /**
+     * @test
+     */
     public function it_should_return_the_default_value_false_for_a_boolean_parameter()
     {
         $this->specification = array(
