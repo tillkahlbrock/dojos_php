@@ -38,4 +38,12 @@ class ParserTest extends PHPUnit_Framework_TestCase
             $this->parser->parse('-f -p')
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_should_parse_one_int_parameter()
+    {
+        $this->assertEquals(array('n' => 123), $this->parser->parse('-n 123'));
+    }
 }
