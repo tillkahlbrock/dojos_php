@@ -28,9 +28,14 @@ class ParserTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_one_bool_parameter()
+    public function it_should_parse_two_bool_parameter()
     {
-        $parser = new \ArgsReader\Parser();
-        $this->assertEquals(array('f' => true), $parser->parse('-f'));
+        $this->assertEquals(
+            array(
+                'f' => true,
+                'p' => true
+            ),
+            $this->parser->parse('-f -p')
+        );
     }
 }
