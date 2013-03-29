@@ -8,4 +8,9 @@ class Reader
     {
         return true;
     }
+
+    public function getArg()
+    {
+        return false;
+    }
 }
