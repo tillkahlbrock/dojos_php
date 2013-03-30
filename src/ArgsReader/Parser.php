@@ -24,8 +24,10 @@ class Parser
             } else {
                 end($paramArgMapping);
                 $lastKey = key($paramArgMapping);
-                if ($paramArgMapping[$lastKey]) {
+                if (is_bool($paramArgMapping[$lastKey]) && $paramArgMapping[$lastKey]) {
                     $paramArgMapping[$lastKey] = $arg;
+                } else {
+                    throw new \InvalidArgumentException('Only one argument per parameter allowed');
                 }
             }
         }

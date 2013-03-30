@@ -55,4 +55,13 @@ class ParserTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('\InvalidArgumentException', 'No parameter given');
         $this->parser->parse('some_argument');
     }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_called_with_a_parameter_with_two_arguments()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Only one argument per parameter allowed');
+        $this->parser->parse('-p some_argument another_argument');
+    }
 }
