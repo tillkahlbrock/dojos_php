@@ -46,4 +46,13 @@ class ParserTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(array('n' => 123), $this->parser->parse('-n 123'));
     }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_called_with_only_one_argument()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'No parameter given');
+        $this->parser->parse('some_argument');
+    }
 }

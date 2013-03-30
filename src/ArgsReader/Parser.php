@@ -10,6 +10,10 @@ class Parser
             return array();
         }
 
+        if (substr($parameterString, 0, 1) != '-') {
+            throw new \InvalidArgumentException('No parameter given');
+        }
+
         $paramArgMapping = array();
 
         $args = explode(' ', $parameterString);
