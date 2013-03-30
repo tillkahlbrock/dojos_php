@@ -4,28 +4,28 @@ namespace ArgsReader;
 
 class Parser
 {
-    public function parse($argumentString)
+    public function parse($parameterString)
     {
-        if ($argumentString == '') {
+        if ($parameterString == '') {
             return array();
         }
 
-        $arguments = array();
+        $paramArgMapping = array();
 
-        $args = explode(' ', $argumentString);
+        $args = explode(' ', $parameterString);
 
         foreach ($args as $arg) {
             if (preg_match('/^-(.)$/', $arg, $matches)) {
-                $arguments[substr($matches[0], 1, 1)] = true;
+                $paramArgMapping[substr($matches[0], 1, 1)] = true;
             } else {
-                end($arguments);
-                $lastKey = key($arguments);
-                if ($arguments[$lastKey]) {
-                    $arguments[$lastKey] = $arg;
+                end($paramArgMapping);
+                $lastKey = key($paramArgMapping);
+                if ($paramArgMapping[$lastKey]) {
+                    $paramArgMapping[$lastKey] = $arg;
                 }
             }
         }
 
-        return $arguments;
+        return $paramArgMapping;
     }
 }

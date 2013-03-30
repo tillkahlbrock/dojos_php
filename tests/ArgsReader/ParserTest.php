@@ -12,7 +12,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_return_an_empty_array_if_no_arguments_are_given()
+    public function it_should_return_an_empty_array_if_no_parameters_are_given()
     {
         $this->assertEquals(array(), $this->parser->parse(''));
     }
@@ -42,7 +42,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function it_should_parse_one_int_parameter()
+    public function it_should_parse_a_parameter_with_one_argument()
     {
         $this->assertEquals(array('n' => 123), $this->parser->parse('-n 123'));
     }
