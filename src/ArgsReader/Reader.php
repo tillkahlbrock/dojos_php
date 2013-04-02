@@ -13,6 +13,6 @@ class Reader
 
     public function read($parameterString)
     {
-        $this->parser->parse($parameterString);
+        $this->parser->parse($parameterString, array());
     }
 }

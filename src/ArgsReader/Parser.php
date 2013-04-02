@@ -4,14 +4,10 @@ namespace ArgsReader;
 
 class Parser
 {
-    public function parse($parameterString)
+    public function parse($parameterString, array $specification)
     {
         if ($parameterString == '') {
             return array();
-        }
-
-        if (substr($parameterString, 0, 1) != '-') {
-            throw new \InvalidArgumentException('No parameter given');
         }
 
         $paramArgMapping = array();
@@ -20,7 +16,11 @@ class Parser
 
         foreach ($args as $arg) {
             if (preg_match('/^-(.)$/', $arg, $matches)) {
-                $paramArgMapping[substr($matches[0], 1, 1)] = true;
+                $flag = $matches[1];
+                if (!array_key_exists($flag, $specification)) {
+                    throw new \InvalidArgumentException('Parameter \'-' . $flag . '\' not specified');
+                }
+                $paramArgMapping[$flag] = true;
             } else {
                 end($paramArgMapping);
                 $lastKey = key($paramArgMapping);
@@ -29,6 +29,16 @@ class Parser
                 } else {
                     throw new \InvalidArgumentException('Only one argument per parameter allowed');
                 }
+            }
+        }
+
+        foreach ($paramArgMapping as $param => $arg) {
+            if (!is_bool($arg) && $specification[$param] == 'bool' ) {
+                throw new \InvalidArgumentException('Parameter \'-' . $lastKey . '\' must not be called with an argument');
+            }
+
+            if (is_bool($arg) && $specification[$param] != 'bool') {
+                throw new \InvalidArgumentException('Parameter \'-' . $param . '\' must not be called without an argument');
             }
         }
 

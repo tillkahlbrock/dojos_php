@@ -13,7 +13,7 @@ class ReaderTest extends PHPUnit_Framework_TestCase
         $parser
             ->expects($this->once())
             ->method('parse')
-            ->with($paramString);
+            ->with($paramString, $this->anything());
 
         $reader = new \ArgsReader\Reader($parser);
 
