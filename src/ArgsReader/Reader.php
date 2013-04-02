@@ -9,29 +9,16 @@ class Reader
         $this->specification = $specification;
     }
 
-    public function parse($argumentString)
+    public function read($parameterString)
     {
-        if ($argumentString == '') {
-            return true;
-        }
-
-        $args = explode(' ', $argumentString);
-
-        $parameter = substr($args[0], 1, 1);
-
-        if (!in_array($parameter, array_keys($this->specification))) {
-            throw new \InvalidArgumentException('Unknown parameter \'-' . $parameter . '\'');
-        }
-
-        if ($args[0] == '-f' && isset($args[1]) && !preg_match('/^-.$/', $args[1])) {
-            throw new \InvalidArgumentException('Parameter \'-f\' must not have any arguments.');
-        }
-
-        return true;
+        $parser = new \ArgsReader\Parser();
+        $paramMapping = $parser->parse($parameterString);
+        $this->validate($paramMapping);
+        $this->paramMapping = $paramMapping;
     }
 
-    public function getArg()
+    public function getParam($key)
     {
-        return false;
+        return $this->paramMapping[$key];
     }
 }
