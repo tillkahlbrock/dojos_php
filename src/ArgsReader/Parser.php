@@ -32,16 +32,21 @@ class Parser
             }
         }
 
+        $this->validateMapping($paramArgMapping, $specification);
+
+        return $paramArgMapping;
+    }
+
+    private function validateMapping($paramArgMapping, $specification)
+    {
         foreach ($paramArgMapping as $param => $arg) {
             if (!is_bool($arg) && $specification[$param] == 'bool' ) {
-                throw new \InvalidArgumentException('Parameter \'-' . $lastKey . '\' must not be called with an argument');
+                throw new \InvalidArgumentException('Parameter \'-' . $param . '\' must not be called with an argument');
             }
 
             if (is_bool($arg) && $specification[$param] != 'bool') {
                 throw new \InvalidArgumentException('Parameter \'-' . $param . '\' must not be called without an argument');
             }
         }
-
-        return $paramArgMapping;
     }
 }
