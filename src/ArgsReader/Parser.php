@@ -4,42 +4,46 @@ namespace ArgsReader;
 
 class Parser
 {
+    private $paramArgMapping = array();
+
     public function parse($parameterString, array $specification)
     {
         if ($parameterString == '') {
             return array();
         }
 
-        $paramArgMapping = array();
-
         $args = explode(' ', $parameterString);
+        $lastKey = null;
 
         foreach ($args as $arg) {
             if (preg_match('/^-(.)$/', $arg, $matches)) {
-                $flag = $matches[1];
-                if (!array_key_exists($flag, $specification)) {
-                    throw new \InvalidArgumentException('Parameter \'-' . $flag . '\' not specified');
-                }
-                $paramArgMapping[$flag] = true;
+                $lastKey = $this->parseFlag($matches, $specification);
             } else {
-                end($paramArgMapping);
-                $lastKey = key($paramArgMapping);
-                if (is_bool($paramArgMapping[$lastKey]) && $paramArgMapping[$lastKey]) {
-                    $paramArgMapping[$lastKey] = $arg;
-                } else {
+                if (!is_bool($this->paramArgMapping[$lastKey])) {
                     throw new \InvalidArgumentException('Only one argument per parameter allowed');
                 }
+                $this->paramArgMapping[$lastKey] = $arg;
             }
         }
 
-        $this->validateMapping($paramArgMapping, $specification);
+        $this->validateMapping($specification);
 
-        return $paramArgMapping;
+        return $this->paramArgMapping;
     }
 
-    private function validateMapping($paramArgMapping, $specification)
+    private function parseFlag($matches, $specification)
     {
-        foreach ($paramArgMapping as $param => $arg) {
+        $flag = $matches[1];
+        if (!array_key_exists($flag, $specification)) {
+            throw new \InvalidArgumentException('Parameter \'-' . $flag . '\' not specified');
+        }
+        $this->paramArgMapping[$flag] = true;
+        return $flag;
+    }
+
+    private function validateMapping($specification)
+    {
+        foreach ($this->paramArgMapping as $param => $arg) {
             if (!is_bool($arg) && $specification[$param] == 'bool' ) {
                 throw new \InvalidArgumentException('Parameter \'-' . $param . '\' must not be called with an argument');
             }
