@@ -13,19 +13,15 @@ class Parser
         }
 
         $args = explode(' ', $parameterString);
-        $lastKey = null;
+        $lastFlag = null;
 
         foreach ($args as $arg) {
             if (preg_match('/^-(.)$/', $arg, $matches)) {
-                $lastKey = $this->parseFlag($matches, $specification);
+                $lastFlag = $this->parseFlag($matches, $specification);
             } else {
-                if (!is_bool($this->paramArgMapping[$lastKey])) {
-                    throw new \InvalidArgumentException('Only one argument per parameter allowed');
-                }
-                $this->paramArgMapping[$lastKey] = $arg;
+                $this->parseValue($lastFlag, $arg);
             }
         }
-
         $this->validateMapping($specification);
 
         return $this->paramArgMapping;
@@ -39,6 +35,14 @@ class Parser
         }
         $this->paramArgMapping[$flag] = true;
         return $flag;
+    }
+
+    private function parseValue($flag, $value)
+    {
+        if (!is_bool($this->paramArgMapping[$flag])) {
+            throw new \InvalidArgumentException('Only one argument per parameter allowed');
+        }
+        $this->paramArgMapping[$flag] = $value;
     }
 
     private function validateMapping($specification)
