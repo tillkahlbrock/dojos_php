@@ -8,11 +8,8 @@ class Parser
 
     public function parse($parameterString, array $specification)
     {
-        if ($parameterString == '') {
-            return array();
-        }
+        $args = $this->tokenize($parameterString);
 
-        $args = explode(' ', $parameterString);
         $lastFlag = null;
 
         foreach ($args as $arg) {
@@ -25,6 +22,15 @@ class Parser
         $this->validateMapping($specification);
 
         return $this->paramArgMapping;
+    }
+
+    private function tokenize($parameterString)
+    {
+        if ($parameterString == '') {
+            return array();
+        }
+
+        return explode(' ', $parameterString);
     }
 
     private function parseFlag($matches, $specification)
