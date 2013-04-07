@@ -30,11 +30,16 @@ class Parser
             return array();
         }
 
-        if (substr($parameterString, 0, 1) != '-') {
+        if ($this->doesNotStartWithFlag($parameterString)) {
             throw new \InvalidArgumentException('At least one parameter must be given');
         }
 
         return explode(' ', $parameterString);
+    }
+
+    private function doesNotStartWithFlag($parameterString)
+    {
+        return substr($parameterString, 0, 1) != '-';
     }
 
     private function parseFlag($matches, $specification)
