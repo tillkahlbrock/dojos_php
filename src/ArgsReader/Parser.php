@@ -8,16 +8,23 @@ class Parser
 
     public function parse($parameterString, array $specification)
     {
-        $args = $this->tokenize($parameterString);
+        $tokens = $this->tokenize($parameterString);
 
-        $lastFlag = null;
+        if (count($tokens) == 0) {
+            return array();
+        }
 
-        foreach ($args as $arg) {
-            if ($this->isFlag($arg)) {
-                $lastFlag = $this->parseFlag($arg, $specification);
-                continue;
+        if ($this->isFirstTokenNotAFlag($tokens)) {
+            throw new \InvalidArgumentException('Arguments must start with a flag');
+        }
+
+        $flag = null;
+
+        foreach ($tokens as $token) {
+            if ($this->isFlag($token)) {
+                $flag = $this->parseFlag($token, $specification);
             } else {
-                $this->parseValue($lastFlag, $arg);
+                $this->parseValue($flag, $token);
             }
         }
         $this->validateMapping($specification);
@@ -36,16 +43,12 @@ class Parser
             return array();
         }
 
-        if ($this->doesNotStartWithFlag($parameterString)) {
-            throw new \InvalidArgumentException('At least one parameter must be given');
-        }
-
         return explode(' ', $parameterString);
     }
 
-    private function doesNotStartWithFlag($parameterString)
+    private function isFirstTokenNotAFlag($tokens)
     {
-        return substr($parameterString, 0, 1) != '-';
+        return substr($tokens[0], 0, 1) != '-';
     }
 
     private function parseFlag($flag, $specification)
