@@ -13,8 +13,9 @@ class Parser
         $lastFlag = null;
 
         foreach ($args as $arg) {
-            if (preg_match('/^-(.)$/', $arg, $matches)) {
-                $lastFlag = $this->parseFlag($matches, $specification);
+            if ($this->isFlag($arg)) {
+                $lastFlag = $this->parseFlag($arg, $specification);
+                continue;
             } else {
                 $this->parseValue($lastFlag, $arg);
             }
@@ -22,6 +23,11 @@ class Parser
         $this->validateMapping($specification);
 
         return $this->paramArgMapping;
+    }
+
+    private function isFlag($arg)
+    {
+        return (bool) preg_match('/^-(.)$/', $arg);
     }
 
     private function tokenize($parameterString)
@@ -42,9 +48,9 @@ class Parser
         return substr($parameterString, 0, 1) != '-';
     }
 
-    private function parseFlag($matches, $specification)
+    private function parseFlag($flag, $specification)
     {
-        $flag = $matches[1];
+        $flag = substr($flag, 1, 1);
         if (!array_key_exists($flag, $specification)) {
             throw new \InvalidArgumentException('Parameter \'-' . $flag . '\' not specified');
         }
