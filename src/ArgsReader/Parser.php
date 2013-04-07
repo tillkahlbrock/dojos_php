@@ -6,9 +6,9 @@ class Parser
 {
     private $paramArgMapping = array();
 
-    public function parse($parameterString, array $specification)
+    public function parse($argumentString, array $specification)
     {
-        $tokens = $this->tokenize($parameterString);
+        $tokens = $this->tokenize($argumentString);
 
         if (count($tokens) == 0) {
             return array();
@@ -37,13 +37,13 @@ class Parser
         return (bool) preg_match('/^-(.)$/', $arg);
     }
 
-    private function tokenize($parameterString)
+    private function tokenize($argumentString)
     {
-        if ($parameterString == '') {
+        if ($argumentString == '') {
             return array();
         }
 
-        return explode(' ', $parameterString);
+        return explode(' ', $argumentString);
     }
 
     private function isFirstTokenNotAFlag($tokens)
