@@ -99,4 +99,14 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
         $this->parser->parse('-u', $specification);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_no_parameter_but_an_argument_is_given()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'At least one parameter must be given');
+
+        $this->parser->parse('some_argument', array());
+    }
 }

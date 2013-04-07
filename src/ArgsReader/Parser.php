@@ -30,6 +30,10 @@ class Parser
             return array();
         }
 
+        if (substr($parameterString, 0, 1) != '-') {
+            throw new \InvalidArgumentException('At least one parameter must be given');
+        }
+
         return explode(' ', $parameterString);
     }
 
