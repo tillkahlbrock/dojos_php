@@ -19,10 +19,10 @@ class Reader
     public function read($parameterString)
     {
         $paramArgMapping = $this->parser->parse($parameterString, array());
-        if (!$this->validator->isValid($paramArgMapping)) {
-            return $this->validator->getErrors();
-        }
-
-        return $paramArgMapping;
+//        if (!$this->validator->isValid($paramArgMapping)) {
+//            return $this->validator->getErrors();
+//        }
+//
+//        return $paramArgMapping;
     }
 }
