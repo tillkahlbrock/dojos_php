@@ -19,6 +19,8 @@ class Reader
     public function read($parameterString)
     {
         $paramArgMapping = $this->parser->parse($parameterString, array());
-        $this->validator->validate($paramArgMapping);
+        if (!$this->validator->validate($paramArgMapping)) {
+            throw new \InvalidArgumentException('Validation failed');
+        }
     }
 }

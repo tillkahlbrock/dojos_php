@@ -30,6 +30,11 @@ class ReaderTest extends PHPUnit_Framework_TestCase
     {
         $paramString = self::SOME_PARAM_STRING;
 
+        $this->validator
+            ->expects($this->any())
+            ->method('validate')
+            ->will($this->returnValue(true));
+
         $this->parser = $this->getMock('\ArgsReader\Parser');
         $this->parser
             ->expects($this->once())
@@ -58,12 +63,27 @@ class ReaderTest extends PHPUnit_Framework_TestCase
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->with($this->identicalTo($mapping));
+            ->with($this->identicalTo($mapping))
+            ->will($this->returnValue(true));
 
         $this->buildReader()->read(self::SOME_PARAM_STRING);
     }
 
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_the_validator_returns_false()
+    {
+        $this->setExpectedException('\InvalidArgumentException', 'Validation failed');
 
+        $this->validator = $this->getMock('\ArgsReader\Validator');
+        $this->validator
+            ->expects($this->any())
+            ->method('validate')
+            ->will($this->returnValue(false));
+
+        $this->buildReader()->read(self::SOME_PARAM_STRING);
+    }
 
     private function someMapping()
     {
