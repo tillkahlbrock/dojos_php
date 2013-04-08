@@ -2,6 +2,7 @@
 
 class ReaderTest extends PHPUnit_Framework_TestCase
 {
+    const SOME_PARAM_STRING = 'some param string';
 
     /**
      * @var \ArgsReader\Parser | PHPUnit_Framework_MockObject_MockObject
@@ -27,7 +28,7 @@ class ReaderTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_call_the_parser_with_the_given_parameter_string()
     {
-        $paramString = 'some param string';
+        $paramString = self::SOME_PARAM_STRING;
 
         $this->parser = $this->getMock('\ArgsReader\Parser');
         $this->parser
@@ -45,7 +46,28 @@ class ReaderTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_call_the_validator_with_the_mapping_from_the_parser()
     {
+        $mapping = $this->someMapping();
 
+        $this->parser = $this->getMock('\ArgsReader\Parser');
+        $this->parser
+            ->expects($this->any())
+            ->method('parse')
+            ->will($this->returnValue($mapping));
+
+        $this->validator = $this->getMock('\ArgsReader\Validator');
+        $this->validator
+            ->expects($this->once())
+            ->method('validate')
+            ->with($this->identicalTo($mapping));
+
+        $this->buildReader()->read(self::SOME_PARAM_STRING);
+    }
+
+
+
+    private function someMapping()
+    {
+        return array('f' => 'some_arg');
     }
 
     /**
