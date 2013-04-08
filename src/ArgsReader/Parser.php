@@ -25,7 +25,8 @@ class Parser
                 $flagWithoutDash = substr($token, 1, 1);
                 $this->paramArgMapping[$flagWithoutDash] = true;
             } else {
-                $this->parseValue($flagWithoutDash, $token);
+                $value = $this->parseValue($flagWithoutDash, $token);
+                $this->paramArgMapping[$flagWithoutDash] = $value;
             }
         }
 
@@ -56,6 +57,7 @@ class Parser
         if (!is_bool($this->paramArgMapping[$flag])) {
             throw new \InvalidArgumentException('Only one argument per parameter allowed');
         }
-        $this->paramArgMapping[$flag] = $value;
+
+        return $value;
     }
 }
