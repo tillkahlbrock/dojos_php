@@ -1,5 +1,5 @@
 {
-    "hash": "b25b474ea1a757be4d7ef38402378c80",
+    "hash": "d0f48a63634817af782dfd9c5af44835",
     "packages": [
         {
             "name": "phpunit/php-code-coverage",
@@ -356,18 +356,62 @@
             "time": "2013-02-05 07:46:41"
         },
         {
+            "name": "schnipseljagd/testdatabuilder",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schnipseljagd/TestDataBuilder.git",
+                "reference": "09c2149bd3300d610b08ba3ca02030b538c2b0cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schnipseljagd/TestDataBuilder/zipball/09c2149bd3300d610b08ba3ca02030b538c2b0cf",
+                "reference": "09c2149bd3300d610b08ba3ca02030b538c2b0cf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "phpunit/phpunit": "@stable"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "TestDataBuilder": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Joscha",
+                    "email": "joscha@schnipseljagd.org"
+                }
+            ],
+            "description": "Helps you to build your mocks, stubs and test data in a nice oop way.",
+            "homepage": "https://github.com/schnipseljagd/TestDataBuilder",
+            "keywords": [
+                "mock",
+                "mocking",
+                "test",
+                "testing"
+            ],
+            "time": "2013-01-08 21:58:35"
+        },
+        {
             "name": "symfony/yaml",
             "version": "2.2.x-dev",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "3f6d4ab3fd8226ab4ba0be9fc8a238f4338b79ab"
+                "reference": "v2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/3f6d4ab3fd8226ab4ba0be9fc8a238f4338b79ab",
-                "reference": "3f6d4ab3fd8226ab4ba0be9fc8a238f4338b79ab",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/v2.2.1",
+                "reference": "v2.2.1",
                 "shasum": ""
             },
             "require": {
@@ -410,9 +454,9 @@
 
     ],
     "minimum-stability": "dev",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "schnipseljagd/testdatabuilder": 20
+    },
     "platform": {
         "php": "5.4.*"
     },
