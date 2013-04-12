@@ -20,8 +20,8 @@ class ReaderTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->parser = $this->getMock('\ArgsReader\Parser');
-        $this->validator = $this->getMock('\ArgsReader\Validator');
+        $this->parser = $this->aStub('\ArgsReader\Parser')->with('parse', array());
+        $this->validator = $this->validator = $this->aStub('\ArgsReader\Validator')->with('validate', true);
     }
 
 
@@ -32,15 +32,9 @@ class ReaderTest extends PHPUnit_Framework_TestCase
     {
         $paramString = self::SOME_PARAM_STRING;
 
-        $this->validator
-            ->expects($this->any())
-            ->method('validate')
-            ->will($this->returnValue(true));
-
-        $this->parser = $this->getMock('\ArgsReader\Parser');
+        $this->parser = $this->aMock('\ArgsReader\Parser');
         $this->parser
-            ->expects($this->once())
-            ->method('parse')
+            ->expectsCall('parse')
             ->with($paramString, $this->anything());
 
         $reader = $this->buildReader();
@@ -55,16 +49,11 @@ class ReaderTest extends PHPUnit_Framework_TestCase
     {
         $mapping = $this->someMapping();
 
-        $this->parser = $this->getMock('\ArgsReader\Parser');
-        $this->parser
-            ->expects($this->any())
-            ->method('parse')
-            ->will($this->returnValue($mapping));
+        $this->parser->with('parse', $mapping);
 
-        $this->validator = $this->getMock('\ArgsReader\Validator');
+        $this->validator = $this->aMock('\ArgsReader\Validator');
         $this->validator
-            ->expects($this->once())
-            ->method('validate')
+            ->expectsCall('validate')
             ->with($this->identicalTo($mapping))
             ->will($this->returnValue(true));
 
@@ -78,11 +67,7 @@ class ReaderTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\InvalidArgumentException', 'Validation failed');
 
-        $this->validator = $this->getMock('\ArgsReader\Validator');
-        $this->validator
-            ->expects($this->any())
-            ->method('validate')
-            ->will($this->returnValue(false));
+        $this->validator->with('validate', false);
 
         $this->buildReader()->read(self::SOME_PARAM_STRING);
     }
@@ -92,15 +77,7 @@ class ReaderTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_return_null_if_the_requested_flag_has_not_been_parsed()
     {
-        $this->validator
-            ->expects($this->any())
-            ->method('validate')
-            ->will($this->returnValue(true));
-
-        $this->parser
-            ->expects($this->any())
-            ->method('parse')
-            ->will($this->returnValue(array('f' => 'an argument')));
+        $this->parser->with('parse', array('f' => 'an argument'));
 
         $reader = $this->buildReader();
 
@@ -116,15 +93,7 @@ class ReaderTest extends PHPUnit_Framework_TestCase
         $flag = self::SOME_FLAG;
         $argument = self::SOME_ARGUMENT;
 
-        $this->validator
-            ->expects($this->any())
-            ->method('validate')
-            ->will($this->returnValue(true));
-
-        $this->parser
-            ->expects($this->any())
-            ->method('parse')
-            ->will($this->returnValue(array($flag => $argument)));
+        $this->parser->with('parse', array($flag => $argument));
 
         $reader = $this->buildReader();
 
@@ -142,9 +111,22 @@ class ReaderTest extends PHPUnit_Framework_TestCase
      */
     private function buildReader()
     {
-        return new \ArgsReader\Reader(
-            $this->parser,
-            $this->validator
-        );
+        $objectBuilder = new TestDataBuilder_ObjectBuilder('\ArgsReader\Reader');
+        return $objectBuilder->with(
+            array(
+                $this->parser,
+                $this->validator
+            )
+        )->build();
+    }
+
+    private function aStub($className)
+    {
+        return new TestDataBuilder_StubBuilder($className, $this);
+    }
+
+    private function aMock($className)
+    {
+        return new TestDataBuilder_MockBuilder($className, $this);
     }
 }
