@@ -164,6 +164,43 @@ class MatchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('player2 wins', $match->getScores());
     }
 
+    /**
+     * @test
+     */
+    public function it_should_return_player1_wins_if_player1_scores_once_after_he_had_advantage()
+    {
+        $match = $this->buildMatch();
+
+        $match->scoreFirstPlayer();
+        $match->scoreFirstPlayer();
+        $match->scoreFirstPlayer();
+
+        $match->scoreSecondPlayer();
+        $match->scoreSecondPlayer();
+        $match->scoreSecondPlayer();
+
+        $match->scoreFirstPlayer();
+
+        $match->scoreFirstPlayer();
+
+        $this->assertEquals('player1 wins', $match->getScores());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_player1_wins_if_player1_scores_four_times_in_a_row()
+    {
+        $match = $this->buildMatch();
+
+        $match->scoreFirstPlayer();
+        $match->scoreFirstPlayer();
+        $match->scoreFirstPlayer();
+        $match->scoreFirstPlayer();
+
+        $this->assertEquals('player1 wins', $match->getScores());
+    }
+
     private function buildMatch()
     {
         return new \Tennis\Match();

@@ -40,6 +40,10 @@ class Match
             return 'advantage player1';
         }
 
+        if ($this->scores[0] == ($this->scores[1] + 2)) {
+            return 'player1 wins';
+        }
+
         if ($this->scores[0] == ($this->scores[1] - 2)) {
             return 'player2 wins';
         }
